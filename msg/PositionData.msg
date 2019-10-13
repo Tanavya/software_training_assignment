@@ -1,3 +1,3 @@
-float 32 x
-float 32 y
-float 32 distance
+float32 distance_x
+float32 distance_y
+float32 distance

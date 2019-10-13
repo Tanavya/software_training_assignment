@@ -8,9 +8,10 @@ project(software_training_assignment)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  roscpp
-  rospy
-  std_msgs
+   roscpp
+   rospy
+   std_msgs
+   message_generation
 )
 
 ## System dependencies are found with CMake's conventions
@@ -47,18 +48,16 @@ find_package(catkin REQUIRED COMPONENTS
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-# add_message_files(
-#   FILES
-#   Message1.msg
-#   Message2.msg
-# )
+add_message_files(
+ FILES
+ PositionData.msg
+)
 
 ## Generate services in the 'srv' folder
-# add_service_files(
-#   FILES
-#   Service1.srv
-#   Service2.srv
-# )
+add_service_files(
+  FILES
+  ResetMovingTurtle.srv
+)
 
 ## Generate actions in the 'action' folder
 # add_action_files(
@@ -68,10 +67,12 @@ find_package(catkin REQUIRED COMPONENTS
 # )
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-#   std_msgs
-# )
+
+
+generate_messages (
+  DEPENDENCIES
+  std_msgs
+)
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -105,7 +106,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES software_training_assignment
-#  CATKIN_DEPENDS roscpp rospy std_msgs
+   CATKIN_DEPENDS message_runtime
 #  DEPENDS system_lib
 )
 
@@ -204,3 +205,19 @@ include_directories(
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
+
+add_executable(spawn_turtles src/spawn_turtles.cpp)
+target_link_libraries(spawn_turtles ${catkin_LIBRARIES})
+add_dependencies(spawn_turtles software_training_assignment_generate_messages_cpp)
+
+add_executable(clear_turtle src/clear_turtle.cpp)
+target_link_libraries(clear_turtle ${catkin_LIBRARIES})
+add_dependencies(clear_turtle software_training_assignment_generate_messages_cpp)
+
+add_executable(reset_moving_turtle src/reset_moving_turtle.cpp)
+target_link_libraries(reset_moving_turtle ${catkin_LIBRARIES})
+add_dependencies(reset_moving_turtle software_training_assignment_generate_messages_cpp)
+
+add_executable(position_data_publisher src/position_data_publisher.cpp)
+target_link_libraries(position_data_publisher ${catkin_LIBRARIES})
+add_dependencies(position_data_publisher software_training_assignment_generate_messages_cpp)
