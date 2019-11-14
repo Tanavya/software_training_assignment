@@ -7,12 +7,18 @@ project(software_training_assignment)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
+
 find_package(catkin REQUIRED COMPONENTS
    roscpp
    rospy
    std_msgs
    message_generation
+   actionlib_msgs
+   actionlib
 )
+
+## find_package(catkin REQUIRED COMPONENTS actionlib_msgs)
+
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -60,18 +66,16 @@ add_service_files(
 )
 
 ## Generate actions in the 'action' folder
-# add_action_files(
-#   FILES
-#   Action1.action
-#   Action2.action
-# )
+add_action_files(
+  DIRECTORY action
+  FILES MoveTurtle.action
+)
 
 ## Generate added messages and services with any dependencies listed here
 
 
-generate_messages (
-  DEPENDENCIES
-  std_msgs
+generate_messages(
+  DEPENDENCIES actionlib_msgs std_msgs
 )
 
 ################################################
@@ -106,7 +110,7 @@ generate_messages (
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES software_training_assignment
-   CATKIN_DEPENDS message_runtime
+   CATKIN_DEPENDS message_runtime actionlib_msgs
 #  DEPENDS system_lib
 )
 
@@ -221,3 +225,11 @@ add_dependencies(reset_moving_turtle software_training_assignment_generate_messa
 add_executable(position_data_publisher src/position_data_publisher.cpp)
 target_link_libraries(position_data_publisher ${catkin_LIBRARIES})
 add_dependencies(position_data_publisher software_training_assignment_generate_messages_cpp)
+
+add_executable(move_turtle_server src/move_turtle_server.cpp)
+target_link_libraries(move_turtle_server ${catkin_LIBRARIES})
+add_dependencies(move_turtle_server software_training_assignment_generate_messages_cpp)
+
+add_executable(move_turtle_client src/move_turtle_client.cpp)
+target_link_libraries(move_turtle_client ${catkin_LIBRARIES})
+add_dependencies(move_turtle_client software_training_assignment_generate_messages_cpp)
