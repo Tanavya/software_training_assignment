@@ -2,6 +2,8 @@
 #include <actionlib/client/simple_action_client.h>
 #include <actionlib/client/terminal_state.h>
 #include <software_training_assignment/MoveTurtleAction.h>
+#include <iostream>
+
 
 int main(int argc, char **argv) {
 	
@@ -14,8 +16,15 @@ int main(int argc, char **argv) {
 	software_training_assignment::MoveTurtleGoal goal;
 	//software_training_assignment::MoveTurtleActionGoal goal; //??
 
-	goal.goal_x = 5; //how can I test these dynamically?
-	goal.goal_y = 5;
+	float goal_x, goal_y;
+
+	std::cout << "Enter x-coordinate: ";
+	std::cin >> goal_x;
+	std::cout << "Enter y-coordinate: ";
+	std::cin >> goal_y;
+
+	goal.goal_x = goal_x;
+	goal.goal_y = goal_y;
 
 	ac.sendGoal(goal);
 
